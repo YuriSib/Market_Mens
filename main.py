@@ -36,6 +36,9 @@ def product_monitoring():
         link, photo = load_row('search_table', id_)[3], load_row('wb_table', id_)[3]
         current_price = load_row('wb_table', id_)[2]
 
+        if name:
+            if len(name) > 100:
+                continue
         if price_curr != current_price:
             save_announced(id_, False)
             announced = 'True'
@@ -80,12 +83,12 @@ def main(url):
 if __name__ == '__main__':
     category_dict = category_url()
     while True:
-        # try:
+        try:
             for key, value in category_dict.items():
                 print(key)
                 main(value)
             product_monitoring()
-        # except Exception as e:
-        #     error_message(e)
-        #     continue
+        except Exception as e:
+            error_message(e)
+            continue
 
