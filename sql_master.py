@@ -1,23 +1,21 @@
 import sqlite3 as sq
 
 
-def load_row(wb_id, table, all_=False):
+def load_row(table, wb_id=None):
     with sq.connect('hoarder.db') as con:
         cur = con.cursor()
-        if all_ is True:
-            sql_query = f"""
-                SELECT *
-                FROM {table}
-            """
-        else:
+        if wb_id:
             sql_query = f"""
                 SELECT *
                 FROM {table}
                 WHERE wb_id = {wb_id};
             """
-
-        cur.execute(sql_query)
-        row = cur.fetchone()
+            cur.execute(sql_query)
+            row = cur.fetchone()
+        else:
+            sql_query = f"""SELECT * FROM {table};"""
+            cur.execute(sql_query)
+            row = cur.fetchall()
 
     return row
 
@@ -49,13 +47,11 @@ def save_in_suitable_products_table(wb_id, name, current_wb_price, search_price)
 def mixing_table():
     with sq.connect('hoarder.db') as con:
         cur = con.cursor()
-        sql_query_insert = f"""
-            CREATE TABLE temp_table AS SELECT * FROM suitable_products_table ORDER BY RANDOM();
-            DROP TABLE suitable_products_table;
-            ALTER TABLE temp_table RENAME TO suitable_products_table;
-        """
 
-        cur.execute(sql_query_insert)
+        cur.execute('CREATE TABLE temp_table AS SELECT * FROM suitable_products_table ORDER BY RANDOM();')
+        cur.execute('DROP TABLE suitable_products_table;')
+        cur.execute('ALTER TABLE temp_table RENAME TO suitable_products_table;')
+
         con.commit()
 
 

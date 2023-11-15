@@ -28,17 +28,20 @@ def compare(price_wb, price_search, percent=35):
 
 def product_monitoring():
     mixing_table()
-    product_list = load_row(None, 'suitable_products_table', True)
+    product_list = load_row('suitable_products_table')
 
     cnt = 15
     for product in product_list:
         id_, name, price_curr, search_price, announced = product[0], product[1], product[2], product[4], product[5]
-        link, photo = load_row(id_, 'search_table')[3], load_row(id_, 'wb_table')[3]
-        current_price = load_row(id_, 'wb_table')[2]
+        link, photo = load_row('search_table', id_)[3], load_row('wb_table', id_)[3]
+        current_price = load_row('wb_table', id_)[2]
 
         if price_curr != current_price:
             save_announced(id_, False)
+            announced = 'True'
         if announced:
+            continue
+        if not link or not photo:
             continue
 
         message(photo=photo, name=name, id_=id_, new_price=current_price, search_price=search_price, link=link)
@@ -58,9 +61,9 @@ def main(url):
         try:
             price, id_ = product['Цена со скидкой'], product['Артикул, id']
 
-            if load_row(id_, 'wb_table') and load_row(id_, 'search_table'):
-                name, photo = load_row(id_, 'wb_table')[1], load_row(id_, 'wb_table')[3]
-                search_price, link = load_row(id_, 'search_table')[2], load_row(id_, 'search_table')[3]
+            if load_row('wb_table', id_) and load_row('search_table', id_):
+                name, photo = load_row('wb_table', id_)[1], load_row('wb_table', id_)[3]
+                search_price, link = load_row('search_table', id_)[2], load_row('search_table', id_)[3]
             else:
                 continue
 
@@ -77,12 +80,12 @@ def main(url):
 if __name__ == '__main__':
     category_dict = category_url()
     while True:
-        try:
+        # try:
             for key, value in category_dict.items():
                 print(key)
                 main(value)
             product_monitoring()
-        except Exception as e:
-            error_message(e)
-            continue
+        # except Exception as e:
+        #     error_message(e)
+        #     continue
 
