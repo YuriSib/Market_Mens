@@ -22,7 +22,7 @@ def message(photo, name, id_, new_price, search_price, link):
                    f'\n===========================\n'
                    f'Ссылка на карточку: \nhttps://www.wildberries.ru/catalog/{id_}/detail.aspx'
                    )
-    time.sleep(2)
+    time.sleep(10)
 
 
 def error_message(text):
