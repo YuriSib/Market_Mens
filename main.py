@@ -54,7 +54,7 @@ def product_monitoring():
         if cnt == 0:
             break
 
-    countdown(2)
+    countdown(5)
 
 
 def main(url):
