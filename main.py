@@ -30,7 +30,7 @@ def product_monitoring():
     mixing_table()
     product_list = load_row('suitable_products_table')
 
-    cnt = 10
+    cnt = 100
     for product in product_list:
         id_, name, price_curr, search_price, announced = product[0], product[1], product[2], product[4], product[5]
         link, photo = load_row('search_table', id_)[3], load_row('wb_table', id_)[3]
@@ -54,7 +54,7 @@ def product_monitoring():
         if cnt == 0:
             break
 
-    countdown(30)
+    countdown(2)
 
 
 def main(url):

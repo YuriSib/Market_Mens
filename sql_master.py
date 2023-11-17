@@ -67,7 +67,7 @@ def save_announced(wb_id, announced):
         else:
             sql_query = f"""
                 UPDATE suitable_products_table 
-                SET announced = 'True'
+                SET announced = ''
                 WHERE wb_id = {wb_id};
             """
 
