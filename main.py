@@ -90,7 +90,7 @@ def main(url):
                     else:
                         property_, photo_ = get_product(id_)
                         save_in_suitable_products_table(id_, name, price, search_price, property_)
-                    print('Iteration exit is successfully!')
+                    print('Row was added in database!')
                 else:
                     if row:
                         delete_row(id_, 'suitable_products_table')
