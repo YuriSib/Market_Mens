@@ -108,17 +108,22 @@ def get_product(id_):
 
     grouped_options = response.get('grouped_options', None)
     description = response.get('description', None)
-    power = f'Мощность : {str(get_power(description))} кВт'
+    power = str(get_power(description))
+    power = f'Мощность : {power} кВт' if power != '0' else None
 
     if grouped_options:
         if type(grouped_options[0]) is not int:
-            dirty_property_list = grouped_options[0].get('options', None)
+            dirty_property_list = []
+            for option in grouped_options:
+                dirty_property_list.extend(option.get('options', None))
             property_ = ''
             properties = ['ощность', 'апряжение', 'апуск', 'корость', 'вигатель', 'борот', 'свар', 'итани',
                           'ккумулятор', 'Тип', 'нергия', 'репление', 'удар', 'рутящий']
+
             for item in dirty_property_list:
-                if item['name'] in properties:
-                    property_ += item['name'] + ' : ' + item['value'] + '\n'
+                for i in properties:
+                    if i in item['name']:
+                        property_ += item['name'] + ' : ' + item['value'] + '\n'
 
             if not property_:
                 property_ = power

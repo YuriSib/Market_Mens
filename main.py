@@ -16,7 +16,7 @@ def countdown(minutes):
             print('Начинаю новую итерацию!')
 
 
-def compare(price_wb, price_search, percent=35):
+def compare(price_wb, price_search, percent=30):
     price_wb, price_search = float(price_wb), float(price_search)
     difference = (price_search - price_wb) / price_search * 100
     if 120 > difference > percent and price_search > 4000:
@@ -49,7 +49,8 @@ def product_monitoring():
         if not link or not photo:
             continue
 
-        message(photo=photo, name=name, id_=id_, new_price=current_price, search_price=search_price, link=link)
+        message(photo=photo, name=name, id_=id_, new_price=current_price, search_price=search_price, link=link,
+                property_=property_)
         save_announced(id_, True)
 
         cnt -= 1

@@ -12,9 +12,11 @@ def test(message_):
     bot.reply_to(message_, f"Your chat ID is: {chat_id}")
 
 
-def message(photo, name, id_, new_price, search_price, link):
+def message(photo, name, id_, new_price, search_price, link, property_):
     bot.send_photo(-1002049731505, f'{photo}',
                    f'{name}, \n id: {id_} \n'
+                   f'===========================\n'
+                   f'{property_}'
                    f'===========================\n'
                    f' Цена - {new_price} руб.\n '
                    f'===========================\n'
