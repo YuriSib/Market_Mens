@@ -90,9 +90,11 @@ def main(url):
 
                     if not row:
                         save_in_suitable_products_table(id_, name, price, search_price, property_)
+                    print('Iteration exit is successfully!')
                 else:
                     if row:
                         delete_row(id_, 'suitable_products_table')
+                        print('Row was delete!')
         # except Exception as e:
         #     error_message(e)
 
