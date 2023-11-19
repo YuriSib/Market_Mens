@@ -77,18 +77,18 @@ def main(url):
                 save_price(id_, price, 'wb_table')
                 check_difference = compare(price, search_price)
 
-                property_, photo_ = get_product(id_)
                 row = load_row('suitable_products_table', id_)
 
                 if check_difference:
                     if row:
-                        if not row[6]:
+                        if not row[6] or not photo:
+                            property_, photo_ = get_product(id_)
                             save_property_in_suitable_products_table(id_, property_)
+                            save_in_photo(id_, photo_)
+                            print('Database was update!')
 
-                    if not photo:
-                        save_in_photo(id_, photo_)
-
-                    if not row:
+                    else:
+                        property_, photo_ = get_product(id_)
                         save_in_suitable_products_table(id_, name, price, search_price, property_)
                     print('Iteration exit is successfully!')
                 else:

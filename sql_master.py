@@ -43,8 +43,8 @@ def save_in_photo(wb_id, photo):
     with sq.connect('hoarder.db') as con:
         cur = con.cursor()
         sql_query_insert = f"""
-            INSERT OR REPLACE INTO wb_table (photo)
-            VALUES('{photo}')
+            UPDATE wb_table
+            SET photo = '{photo}'
             WHERE wb_id = {wb_id};
         """
 
