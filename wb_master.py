@@ -1,4 +1,5 @@
 import requests
+import re
 
 
 def settings(url, page=''):
@@ -63,5 +64,67 @@ def get_category(url):
         cnt += 1
 
     return product_list
+
+
+def curl_creator(id_, vol=4, part=6):
+    for number in range(0, 17):
+        num = number if number >= 10 else '0' + str(number)
+        url = f'https://basket-{num}.wb.ru/vol{str(id_)[:vol]}/part{str(id_)[:part]}/{str(id_)}/info/ru/card.json'
+        try:
+            response = settings(url)
+            if response:
+                break
+        except Exception:
+            continue
+    return response, url
+
+
+def get_power(description):
+    pattern = r'(\d+(?:\.\d+)?)\s*(?:кВт|Вт|квт)'
+
+    match_list = re.findall(pattern, description)
+    if match_list:
+        power = match_list[0]
+
+        shortening = power.replace('.', '').replace('0', '')
+        if len(shortening) >= 3:
+            power = float(power) / 1000
+
+        return float(power)
+    else:
+        return 0
+
+
+def get_product(id_):
+    response, url_ = curl_creator(id_)
+    if response == 0:
+        response, url_ = curl_creator(id_, 3, 5)
+        if response == 0:
+            response, url_ = curl_creator(id_, 2, 4)
+    if response == 0:
+        return 0, 0
+
+    photo_link = url_.replace('info/ru/card.json', 'images/big/1.webp')
+
+    grouped_options = response.get('grouped_options', None)
+    description = response.get('description', None)
+    power = f'Мощность : {str(get_power(description))} кВт'
+
+    if grouped_options:
+        if type(grouped_options[0]) is not int:
+            dirty_property_list = grouped_options[0].get('options', None)
+            property_ = ''
+            properties = ['ощность', 'апряжение', 'апуск', 'корость', 'вигатель', 'борот', 'свар', 'итани',
+                          'ккумулятор', 'Тип', 'нергия', 'репление', 'удар', 'рутящий']
+            for item in dirty_property_list:
+                if item['name'] in properties:
+                    property_ += item['name'] + ' : ' + item['value'] + '\n'
+
+            if not property_:
+                property_ = power
+            return property_, photo_link
+    else:
+        return power, photo_link
+
 
 

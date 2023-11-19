@@ -1,7 +1,8 @@
 import time
 
-from wb_master import get_category
-from sql_master import load_row, save_price, save_in_suitable_products_table, mixing_table, save_announced
+from wb_master import get_category, get_product
+from sql_master import load_row, save_price, save_in_suitable_products_table, mixing_table, save_announced, delete_row,\
+    save_in_photo
 from tg_master import message, error_message
 from url_master import category_url
 
@@ -33,6 +34,7 @@ def product_monitoring():
     cnt = 100
     for product in product_list:
         id_, name, price_curr, search_price, announced = product[0], product[1], product[2], product[4], product[5]
+        property_ = product[6]
         link, photo = load_row('search_table', id_)[3], load_row('wb_table', id_)[3]
         current_price = load_row('wb_table', id_)[2]
 
@@ -70,12 +72,20 @@ def main(url):
             else:
                 continue
 
-            if photo and link != '0':
+            if link != '0':
                 save_price(id_, price, 'wb_table')
                 check_difference = compare(price, search_price)
 
                 if check_difference:
-                    save_in_suitable_products_table(id_, name, price, search_price)
+                    property_, photo_ = get_product(id_)
+                    if not photo:
+                        save_in_photo(id_, photo_)
+
+                    if not load_row('suitable_products_table', id_):
+                        save_in_suitable_products_table(id_, name, price, search_price, property_)
+                else:
+                    if load_row('suitable_products_table', id_):
+                        delete_row(id_, 'suitable_products_table')
         except Exception as e:
             error_message(e)
 
