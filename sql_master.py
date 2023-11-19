@@ -68,7 +68,7 @@ def save_property_in_suitable_products_table(wb_id, property_):
     with sq.connect('hoarder.db') as con:
         cur = con.cursor()
         sql_query_insert = f"""
-            INSERT OR REPLACE INTO suitable_products_table (tools_property)
+            UPDATE suitable_products_table (tools_property)
             VALUES('{property_}')
             WHERE wb_id = {wb_id};
         """
