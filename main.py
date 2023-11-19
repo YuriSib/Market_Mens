@@ -77,18 +77,21 @@ def main(url):
                 save_price(id_, price, 'wb_table')
                 check_difference = compare(price, search_price)
 
+                property_, photo_ = get_product(id_)
+                row = load_row('suitable_products_table', id_)
+
                 if check_difference:
-                    property_, photo_ = get_product(id_)
-                    if not load_row('suitable_products_table', id_)[6]:
-                        save_property_in_suitable_products_table(id_, property_)
+                    if row:
+                        if not row[6]:
+                            save_property_in_suitable_products_table(id_, property_)
 
                     if not photo:
                         save_in_photo(id_, photo_)
 
-                    if not load_row('suitable_products_table', id_):
+                    if not row:
                         save_in_suitable_products_table(id_, name, price, search_price, property_)
                 else:
-                    if load_row('suitable_products_table', id_):
+                    if row:
                         delete_row(id_, 'suitable_products_table')
         # except Exception as e:
         #     error_message(e)
