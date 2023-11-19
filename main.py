@@ -97,12 +97,12 @@ def main(url):
 if __name__ == '__main__':
     category_dict = category_url()
     while True:
-        try:
+        # try:
             for key, value in category_dict.items():
                 print(key)
                 main(value)
             product_monitoring()
-        except Exception as e:
-            error_message(e)
+        # except Exception as e:
+        #     error_message(e)
             continue
 
