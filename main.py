@@ -2,7 +2,7 @@ import time
 
 from wb_master import get_category, get_product
 from sql_master import load_row, save_price, save_in_suitable_products_table, mixing_table, save_announced, delete_row,\
-    save_in_photo
+    save_in_photo, save_property_in_suitable_products_table
 from tg_master import message, error_message
 from url_master import category_url
 
@@ -79,6 +79,9 @@ def main(url):
 
                 if check_difference:
                     property_, photo_ = get_product(id_)
+                    if not load_row('suitable_products_table', id_)[6]:
+                        save_property_in_suitable_products_table(id_, property_)
+
                     if not photo:
                         save_in_photo(id_, photo_)
 
