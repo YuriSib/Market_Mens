@@ -64,7 +64,7 @@ def main(url):
     category_list = get_category(url)
 
     for product in category_list:
-        # try:
+        try:
             price, id_ = product['Цена со скидкой'], product['Артикул, id']
 
             if load_row('wb_table', id_) and load_row('search_table', id_):
@@ -95,8 +95,8 @@ def main(url):
                     if row:
                         delete_row(id_, 'suitable_products_table')
                         print('Row was delete!')
-        # except Exception as e:
-        #     error_message(e)
+        except Exception as e:
+            error_message(e)
 
 
 if __name__ == '__main__':
