@@ -49,8 +49,14 @@ def product_monitoring():
         if not link or not photo:
             continue
 
-        message(photo=photo, name=name, id_=id_, new_price=current_price, search_price=search_price, link=link,
-                property_=property_)
+        try:
+            message(photo=photo, name=name, id_=id_, new_price=current_price, search_price=search_price, link=link,
+                    property_=property_)
+        except Exception:
+            half_length = len(property_) // 2
+            reduced_string = property_[:-half_length]
+            message(photo=photo, name=name, id_=id_, new_price=current_price, search_price=search_price, link=link,
+                    property_=reduced_string)
         save_announced(id_, True)
 
         cnt -= 1
@@ -90,7 +96,7 @@ def main(url):
                     else:
                         property_, photo_ = get_product(id_)
                         save_in_suitable_products_table(id_, name, price, search_price, property_)
-                    print('Row was added in database!')
+                        print('Row was added in database!')
                 else:
                     if row:
                         delete_row(id_, 'suitable_products_table')

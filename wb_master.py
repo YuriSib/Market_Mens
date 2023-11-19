@@ -116,17 +116,23 @@ def get_product(id_):
             dirty_property_list = []
             for option in grouped_options:
                 dirty_property_list.extend(option.get('options', None))
-            property_ = ''
-            properties = ['ощность', 'апряжение', 'апуск', 'корость', 'вигатель', 'борот', 'свар', 'итани',
+            property_ = []
+            properties = ['апряжение', 'апуск', 'корость', 'вигатель', 'борот', 'свар', 'итани',
                           'ккумулятор', 'Тип', 'нергия', 'репление', 'удар', 'рутящий']
 
             for item in dirty_property_list:
                 for i in properties:
                     if i in item['name']:
-                        property_ += item['name'] + ' : ' + item['value'] + '\n'
+                        property_.extend(item['name'] + ' : ' + item['value'])
+                    elif 'ощность' in item['name']:
+                        property_ = [item['name'] + ' : ' + item['value']] + property_
+
+            property_ = list(set(property_))
+            property_ = '\n'.join(property_)
 
             if not property_:
                 property_ = power
+
             return property_, photo_link
     else:
         return power, photo_link
