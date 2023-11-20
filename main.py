@@ -31,7 +31,7 @@ def product_monitoring():
     mixing_table()
     product_list = load_row('suitable_products_table')
 
-    cnt = 100
+    cnt = 10
     for product in product_list:
         id_, name, price_curr, search_price, announced = product[0], product[1], product[2], product[4], product[5]
         property_ = product[6]
