@@ -127,13 +127,17 @@ def get_product(id_):
                     elif 'ощность' in item['name']:
                         property_ = [item['name'] + ' : ' + item['value']] + property_
 
-            property_ = list(set(property_))
-            property_ = '\n'.join(property_)
+            clear_property = []
+            for item in property_:
+                if item not in clear_property:
+                    clear_property.append(item)
 
-            if not property_:
-                property_ = power
+            clear_property = '\n'.join(clear_property)
 
-            return property_, photo_link
+            if not clear_property:
+                clear_property = power
+
+            return clear_property, photo_link
     else:
         return power, photo_link
 
