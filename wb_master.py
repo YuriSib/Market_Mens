@@ -123,9 +123,11 @@ def get_product(id_):
             for item in dirty_property_list:
                 for i in properties:
                     if i in item['name']:
-                        property_.extend(item['name'] + ' : ' + item['value'])
+                        property_ = property_ + [item['name'] + ' : ' + item['value']]
+                        break
                     elif 'ощность' in item['name']:
                         property_ = [item['name'] + ' : ' + item['value']] + property_
+                        break
 
             clear_property = []
             for item in property_:
